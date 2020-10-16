@@ -1,3 +1,7 @@
+yarn dev
+
+nome do banco de dados => server_side_nodejs_task_db
+
 create table tasks (
     id serial primary key,
     title text not null,
