@@ -25,4 +25,24 @@ TaskController.post('', async (req, res) => {
     };
 });
 
+TaskController.delete('/:id', async ( req, res ) => {
+    const { id } = req.params
+
+    try {
+        const existsTask = await TaskService.existsById( id )
+        if (existsTask) {
+            try {
+                TaskService.destroy(id)
+                res.json()
+            } catch (error) {
+                res.status(500).json({error: 'TaskService.destroy() is not working!'})
+            }
+        } else {
+            res.status(404).json({ error: `Id ${id} not found` })
+        }
+} catch (error) {
+    res.status(500).json({error: 'TaskService.existsById() is not working!'})
+};
+})
+
 module.exports = TaskController;

@@ -8,4 +8,13 @@ const store = async ({ title, description, status }) => {
     return await TaskRepository.save({ title, description, status });
 };
 
-module.exports = { index, store }
+const existsById = async ( id ) => {
+    const response = await TaskRepository.findById( id )
+    return response ? true : false
+}
+
+const destroy = (id =>{
+    TaskRepository.remove(id)
+})
+
+module.exports = { index, store, existsById, destroy }
