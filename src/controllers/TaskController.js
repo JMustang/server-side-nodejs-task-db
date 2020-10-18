@@ -11,6 +11,25 @@ TaskController.get('', async (req, res) => {
     };
 });
 
+TaskController.get('/:id', async ( req, res ) => {
+    const { id } = req.params
+
+    try {
+        const existsTask = await TaskService.existsById( id )
+        if (existsTask) {
+            try {
+                res.status(200).json(await TaskService.show(id))
+            } catch (error) {
+                res.status(500).json({error: 'TaskService.show() is not working!'})
+            }
+        } else {
+            res.status(404).json({ error: `Id ${id} not found` })
+        }
+} catch (error) {
+    res.status(500).json({error: 'TaskService.existsById() is not working!'})
+}
+});
+
 TaskController.post('', async (req, res) => {
 
     const { title, description, status } = req.body
