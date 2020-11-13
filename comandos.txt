@@ -1,6 +1,13 @@
 yarn dev
 
+sudo -u postgres psql
+
+\l
+
+
 nome do banco de dados => server_side_nodejs_task_db
+
+\c server_side_nodejs_task_db
 
 create table tasks (
     id serial primary key,
