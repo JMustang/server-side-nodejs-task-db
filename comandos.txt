@@ -114,3 +114,5 @@ insert into tasks (
     current_timestamp,
     current_timestamp
 );
+
+yarn add bcryptjs
