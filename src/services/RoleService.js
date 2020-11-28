@@ -1,5 +1,9 @@
 const RoleRepository = require("../repositories/RoleRepository");
 
+const findRoleByEmail = async (email) => {
+  return await RoleRepository.findRoleByEmail(email);
+};
+
 const existRole = async (roles) => {
   const response = await RoleRepository.findAll();
 
@@ -20,4 +24,5 @@ const existRole = async (roles) => {
 
 module.exports = {
   existRole,
+  findRoleByEmail,
 };

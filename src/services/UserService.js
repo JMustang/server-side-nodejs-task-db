@@ -1,7 +1,18 @@
 const UserRepository = require("../repositories/UserRepository");
 const RoleRepository = require("../repositories/RoleRepository");
 const UserRoleRepository = require("../repositories/UserRoleRepository");
+const RoleService = require("../services/RoleService");
 const bcrypt = require("bcryptjs");
+
+const index = async () => {
+  let users = await UserRepository.findAll();
+
+  for (let i = 0; i < users.length; i++) {
+    users[i].roles = await RoleService.findRoleByEmail(users[i].email);
+  }
+
+  return users;
+};
 
 const existEmail = async (email) => {
   const response = await UserRepository.findByEmail(email);
@@ -23,6 +34,7 @@ const store = async ({ active, name, email, password, roles }) => {
 };
 
 module.exports = {
+  index,
   existEmail,
   store,
 };

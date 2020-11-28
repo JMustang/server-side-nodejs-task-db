@@ -4,6 +4,15 @@ const RoleService = require("../services/RoleService");
 
 const UserController = Router();
 
+UserController.get("", async (req, res) => {
+  try {
+    res.json(await UserService.index());
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "UserService.index() is not working!" });
+  }
+});
+
 UserController.post("", async (req, res) => {
   const { active, name, email, password, roles } = req.body;
 
