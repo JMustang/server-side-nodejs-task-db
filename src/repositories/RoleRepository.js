@@ -19,7 +19,22 @@ const findRoleIdByRole = async (role) => {
   return response.rows[0].id;
 };
 
+const findRoleByEmail = async (email) => {
+  const response = await Database.query(
+    `
+    select role from roles r
+    inner join user_roles ur on r.id = ur.role_id
+    inner join users u on u.id = ur.user_id
+    where u.email = $1
+  `,
+    [email]
+  );
+
+  return response.rows;
+};
+
 module.exports = {
   findAll,
   findRoleIdByRole,
+  findRoleByEmail,
 };

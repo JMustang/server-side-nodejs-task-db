@@ -1,5 +1,13 @@
 const Database = require("../config/Database");
 
+const findAll = async () => {
+  const response = await Database.query(`
+    select id, active, name, email, created_at, updated_at from users order by id
+  `);
+
+  return response.rows;
+};
+
 const findByEmail = async (email) => {
   const response = await Database.query(
     `
@@ -27,6 +35,7 @@ const insertUser = async ({ active, name, email, password }) => {
 };
 
 module.exports = {
+  findAll,
   findByEmail,
   insertUser,
 };
