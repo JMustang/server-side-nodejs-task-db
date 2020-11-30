@@ -116,3 +116,5 @@ insert into tasks (
 );
 
 yarn add bcryptjs
+
+yarn add jsonwebtoken

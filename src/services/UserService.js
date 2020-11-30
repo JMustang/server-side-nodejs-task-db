@@ -33,8 +33,24 @@ const store = async ({ active, name, email, password, roles }) => {
   }
 };
 
+const findUserByEmail = async (email) => {
+  let user = await UserRepository.findUserByEmail(email);
+
+  if (user) {
+    user.roles = await RoleRepository.findRoleByEmail(email);
+  }
+
+  return user;
+};
+
+const validatePassword = async (a, b) => {
+  return await bcrypt.compare(a, b);
+};
+
 module.exports = {
   index,
   existEmail,
   store,
+  findUserByEmail,
+  validatePassword,
 };

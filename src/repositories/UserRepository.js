@@ -34,8 +34,19 @@ const insertUser = async ({ active, name, email, password }) => {
   return response.rows[0];
 };
 
+const findUserByEmail = async (email) => {
+  const response = await Database.query(
+    `
+    select * from users where email = $1 limit 1
+  `,
+    [email]
+  );
+  return response.rows[0];
+};
+
 module.exports = {
   findAll,
   findByEmail,
   insertUser,
+  findUserByEmail,
 };
