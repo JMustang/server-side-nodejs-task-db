@@ -27,7 +27,7 @@ AuthController.post("/signin", async (req, res) => {
     );
 
     if (!passwordValidated) {
-      return res.status(401).json({ error: "Invalid Password!" });
+      return res.json({ signin_error: "Invalid Password!" });
     }
 
     const SECRET_KEY = process.env.SECRET_KEY;
@@ -42,7 +42,7 @@ AuthController.post("/signin", async (req, res) => {
       const token = jwt.sign({ id, roles }, SECRET_KEY, {
         expiresIn: 60 * 60 * 24,
       });
-      res.json(token);
+      res.json({ token });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "jwt.sign() is not working!" });
@@ -63,16 +63,35 @@ AuthController.post("/check-token", async (req, res) => {
     return res.status(401).json({ error: "Environment SECRET_KEY is empty!" });
   }
 
-  try {
-    if (token) {
-      jwt.verify(token, SECRET_KEY)
-        ? res.json({ status: true })
-        : res.json({ status: false });
-    } else {
-      res.json({ status: false });
+  if (token) {
+    try {
+      const tokenVerified = jwt.verify(token, SECRET_KEY);
+      if (tokenVerified && tokenVerified.id) {
+        return res.json({ status_token: true });
+      } else {
+        return res.json({
+          status_token: false,
+          status_error: "Unauthorized with invalid token!",
+        });
+      }
+    } catch (error) {
+      if (error && error.name === "JsonWebTokenError") {
+        return res.json({
+          status_token: false,
+          status_error: "Unauthorized with invalid token!",
+        });
+      } else if (error && error.name === "TokenExpiredError") {
+        return res.json({
+          status_token: false,
+          status_error: "Unauthorized with expired token!",
+        });
+      }
     }
-  } catch (error) {
-    return res.status(500).json({ error: error });
+  } else {
+    return res.json({
+      status_token: false,
+      status_error: "Unauthorized with invalid token!",
+    });
   }
 });
 
