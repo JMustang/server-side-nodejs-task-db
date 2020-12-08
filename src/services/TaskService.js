@@ -35,6 +35,10 @@ const update = async ({ id, title, description, status, created_at }) => {
   });
 };
 
+const updateStatus = async ({ status, id }) => {
+  await TaskRepository.updateStatus({ status, id });
+};
+
 module.exports = {
   index,
   indexByStatus,
@@ -43,4 +47,5 @@ module.exports = {
   existsById,
   destroy,
   update,
+  updateStatus,
 };

@@ -106,4 +106,29 @@ TaskController.put("/:id", async (req, res) => {
   }
 });
 
+TaskController.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const existsTask = await TaskService.existsById(id);
+    if (existsTask) {
+      try {
+        await TaskService.updateStatus({ status, id });
+        res.json();
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .json({ error: "TaskService.updateStatus() is not working" });
+      }
+    } else {
+      res.status(404).json({ error: `Id ${id} not found` });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "TaskService.existsById() is not working" });
+  }
+});
+
 module.exports = TaskController;

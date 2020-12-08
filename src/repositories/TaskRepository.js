@@ -74,6 +74,15 @@ const update = async ({ id, title, description, status, created_at }) => {
   return response.rows[0];
 };
 
+const updateStatus = async ({ status, id }) => {
+  await Database.query(
+    `
+    update tasks set status=$1, updated_at=current_timestamp where id = $2
+  `,
+    [status, id]
+  );
+};
+
 module.exports = {
   findAll,
   findAllByStatus,
@@ -82,4 +91,5 @@ module.exports = {
   findById,
   remove,
   update,
+  updateStatus,
 };
