@@ -1,4 +1,4 @@
-# commands used in creating the API
+# commands used in creating of that API
 
 yarn dev
 
